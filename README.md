@@ -44,3 +44,6 @@ Bug 1:
 
 Admin Invoices Index Page:53 will sometimes throw an error because the number can randomly appear in the randomly generated Invoice #
 ```
+```
+Had to change the schema to allow nil values for invoice_id, and thus had to change some of the validation testing to "allow blank and nil"
+```
