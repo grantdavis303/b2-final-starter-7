@@ -15,4 +15,14 @@ RSpec.describe Coupon, type: :model do
     it { should validate_presence_of(:merchant_id) }
     it { should allow_value("", nil).for(:invoice_id) }
   end
+
+  describe "instance methods" do
+    it "#formatted_amount" do
+      @merchant1 = Merchant.create!(name: "Hair Care")
+      @coupon_1 = Coupon.create!(name: "Coupon 1", code: "$50_OFF_ALL", amount: 50, amount_type: 0, status: 0, merchant_id: @merchant1.id, invoice_id: nil )
+      @coupon_2 = Coupon.create!(name: "Coupon 2", code: "25%_OFF_SELECT", amount: 25, amount_type: 1, status: 0, merchant_id: @merchant1.id, invoice_id: nil )
+      expect(@coupon_1.formatted_amount).to eq("$50 OFF!")
+      expect(@coupon_2.formatted_amount).to eq("25% OFF!")
+    end
+  end
 end
