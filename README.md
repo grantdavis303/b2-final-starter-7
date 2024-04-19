@@ -40,9 +40,11 @@ $ rails db:{drop,create,migrate,seed}
 ### Notes
 
 ```
-Bug 1:
+Bug 1: FIXED
 
-Admin Invoices Index Page:53 will sometimes throw an error because the number can randomly appear in the randomly generated Invoice #
+Solution: Added a within block to section off a part of the invoice so there would be no interference
+
+Problem: Admin Invoices Index Page:53 will sometimes throw an error because the number can randomly appear in the randomly generated Invoice #
 ```
 ```
 Had to change the schema to allow nil values for invoice_id, and thus had to change some of the validation testing to "allow blank and nil"
