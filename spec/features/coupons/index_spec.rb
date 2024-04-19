@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe "merchant dashboard" do
+RSpec.describe "coupon index" do
   before :each do
     @merchant1 = Merchant.create!(name: "Hair Care")
 
@@ -58,116 +58,19 @@ RSpec.describe "merchant dashboard" do
       merchant_id: @merchant1.id,
       invoice_id: nil )
 
-    visit merchant_dashboard_index_path(@merchant1)
+    visit merchant_coupons_path(@merchant1)
   end
 
-  it "shows the merchant name" do
-    expect(page).to have_content(@merchant1.name)
-  end
-
-  it "can see a link to my merchant items index" do
-    expect(page).to have_link("Items")
-
-    click_link "Items"
-
-    expect(current_path).to eq("/merchants/#{@merchant1.id}/items")
-  end
-
-  it "can see a link to my merchant invoices index" do
-    expect(page).to have_link("Invoices")
-
-    click_link "Invoices"
-
-    expect(current_path).to eq("/merchants/#{@merchant1.id}/invoices")
-  end
-
-  it "can see a link to my merchant coupons index" do
-    expect(page).to have_link("Coupons")
-
-    click_link "Coupons"
-
-    expect(current_path).to eq("/merchants/#{@merchant1.id}/coupons")
-  end
-
-  it "shows the names of the top 5 customers with successful transactions" do
-    within("#customer-#{@customer_1.id}") do
-      expect(page).to have_content(@customer_1.first_name)
-      expect(page).to have_content(@customer_1.last_name)
-
-      expect(page).to have_content(3)
-    end
-    within("#customer-#{@customer_2.id}") do
-      expect(page).to have_content(@customer_2.first_name)
-      expect(page).to have_content(@customer_2.last_name)
-      expect(page).to have_content(1)
-    end
-    within("#customer-#{@customer_3.id}") do
-      expect(page).to have_content(@customer_3.first_name)
-      expect(page).to have_content(@customer_3.last_name)
-      expect(page).to have_content(1)
-    end
-    within("#customer-#{@customer_4.id}") do
-      expect(page).to have_content(@customer_4.first_name)
-      expect(page).to have_content(@customer_4.last_name)
-      expect(page).to have_content(1)
-    end
-    within("#customer-#{@customer_5.id}") do
-      expect(page).to have_content(@customer_5.first_name)
-      expect(page).to have_content(@customer_5.last_name)
-      expect(page).to have_content(1)
-    end
-    expect(page).to have_no_content(@customer_6.first_name)
-    expect(page).to have_no_content(@customer_6.last_name)
-  end
-  
-  it "can see a section for Items Ready to Ship with list of names of items ordered and ids" do
-    within("#items_ready_to_ship") do
-
-      expect(page).to have_content(@item_1.name)
-      expect(page).to have_content(@ii_1.invoice_id)
-
-      expect(page).to have_content(@item_2.name)
-      expect(page).to have_content(@ii_2.invoice_id)
-
-      expect(page).to have_no_content(@item_3.name)
-      expect(page).to have_no_content(@ii_3.invoice_id)
-    end
-  end
-
-  it "each invoice id is a link to my merchant's invoice show page " do
-    expect(page).to have_link("#{@ii_1.invoice_id}")
-    expect(page).to have_link("#{@ii_2.invoice_id}")
-    expect(page).to_not have_link("#{@ii_3.invoice_id}")
-
-    click_link("#{@ii_1.invoice_id}", match: :first)
-    expect(current_path).to eq("/merchants/#{@merchant1.id}/invoices/#{@invoice_1.id}")
-  end
-
-  it "shows the date that the invoice was created in this format: Monday, July 18, 2019" do
-    expect(page).to have_content(@invoice_1.created_at.strftime("%A, %B %-d, %Y"))
-  end
-
-  # User Story 1
-  it "has a link to coupon index, that shows all coupon names and amount off" do
-    # As a merchant, when I visit my merchant dashboard page
-    # I see a link to view all of my coupons
-    expect(page).to have_link("Coupons")
-
-    # When I click this link
-    click_link "Coupons"
-
-    # I'm taken to my coupons index page
+  it "has a section for all coupons with names and formatted amount off" do
     expect(current_path).to eq("/merchants/#{@merchant1.id}/coupons")
 
-    # Where I see all of my coupon names including their amount off
     within ".merchant_coupons" do
       within "#merchant_coupon_#{@coupon_1.id}" do
-        # And each coupon's name is also a link to its show page.
         expect(page).to have_link(@coupon_1.name)
         expect(page).to have_content(@coupon_1.name)
         expect(page).to have_content(@coupon_1.formatted_amount)
       end
-
+      
       within "#merchant_coupon_#{@coupon_2.id}" do
         expect(page).to have_link(@coupon_2.name)
         expect(page).to have_content(@coupon_2.name)
