@@ -78,4 +78,68 @@ RSpec.describe "coupon index" do
       end
     end
   end
+
+  it "can see a link to create a merchant coupon" do
+    expect(page).to have_link("Create Coupon")
+
+    click_link "Create Coupon"
+
+    expect(current_path).to eq("/merchants/#{@merchant1.id}/coupons/new")
+  end
+
+  # User Story 2
+  describe "links to a coupon create page" do
+    it "links to a coupon create page that creates a new coupon when properly filled out" do # Good Path
+      # As a merchant, when I visit my coupon index page 
+      # I see a link to create a new coupon (tested in test above).
+      # When I click that link
+      within ".new_merchant_coupon" do
+        click_link "Create Coupon"
+      end
+      # I am taken to a new page where I see a form to add a new coupon.
+      expect(current_path).to eq("/merchants/#{@merchant1.id}/coupons/new")
+
+      within ".new_coupon_form" do
+        expect(page).to have_content("Coupon Name:")
+        expect(page).to have_field(:name)
+        expect(page).to have_content("Coupon Code:")
+        expect(page).to have_field(:code)
+        expect(page).to have_content("Coupon Amount:")
+        expect(page).to have_field(:amount)
+        expect(page).to have_content("Is this amount in dollars off or a percentage off?")
+        expect(page).to have_content("Dollars ($)")
+        expect(page).to have_content("Percentage (%)")
+        expect(page).to have_unchecked_field(:amount_type)        
+        expect(page).to have_button("Create Coupon")
+      end
+      
+      # When I fill in that form with a name, unique code, an amount, and whether that amount is a percent or a dollar amount and click the Submit button
+      within ".new_coupon_form" do
+        fill_in :name, with: "Dope Fall Coupon 1"
+        fill_in :code, with: "75OFFALL2024"
+        fill_in :amount, with: 75
+        choose :amount_type_dollar
+        click_button "Create Coupon"
+      end
+
+      # I'm taken back to the coupon index page and I can see my new coupon listed.
+      expect(current_path).to eq("/merchants/#{@merchant1.id}/coupons")
+
+      within ".merchant_coupons" do
+        expect(page).to have_content("Dope Fall Coupon 1")
+        expect(page).to have_content("$75 OFF!")
+      end
+    end
+
+    it "links to a coupon create page that doesn't creates a new coupon when improperly filled out" do # Bad Path
+      # * Sad Paths to consider: 
+      # 1. This Merchant already has 5 active coupons
+      # 2. Coupon code entered is NOT unique      
+    end
+  end
+
+
+
+
+
 end
