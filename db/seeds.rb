@@ -38,8 +38,8 @@ Coupon.create!(
 
 Coupon.create!(
   name: "Super Sweet Coupon #2",
-  code: "Random Dollar Amt Off",
-  amount: rand(0..99),
+  code: "RANDOFF24",
+  amount: rand(10..75),
   amount_type: 1,
   status: 0,
   merchant_id: 2,
