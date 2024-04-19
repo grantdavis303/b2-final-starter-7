@@ -7,8 +7,8 @@ To set up this code locally, run the following commands:
 
 ```
 $ bundle install
-$ rails db:{drop,create,migrate}
-$ bundle exec rake csv_load:all
+$ rails db:{drop,create,migrate,seed}
+# $ bundle exec rake csv_load:all
 ```
 
 ### Evaluation
@@ -36,3 +36,11 @@ $ bundle exec rake csv_load:all
 - [ ] User Story 6 - Merchant Coupon Index Sorted
 - [ ] User Story 7 - Merchant Invoice Show Page: Subtotal and Grand Total Revenues 
 - [ ] User Story 8 - Admin Invoice Show Page: Subtotal and Grand Total Revenues
+
+### Notes
+
+```
+Bug 1:
+
+Admin Invoices Index Page:53 will sometimes throw an error because the number can randomly appear in the randomly generated Invoice #
+```
