@@ -9,9 +9,6 @@
 Rake::Task["csv_load:all"].invoke
 
 # Create Coupons
-print "Creating Coupons"
-
-print "."
 Coupon.create!(
   name: "Coupon 1",
   code: "$50_OFF_ALL",
@@ -21,7 +18,6 @@ Coupon.create!(
   merchant_id: 1,
   invoice_id: nil )
 
-print "."
 Coupon.create!(
   name: "Coupon 2",
   code: "25%_OFF_SELECT",
@@ -29,6 +25,24 @@ Coupon.create!(
   amount_type: 1,
   status: 0,
   merchant_id: 1,
+  invoice_id: nil )
+
+Coupon.create!(
+  name: "Super Sweet Coupon #1",
+  code: "99%_OFF_ERRYTHING",
+  amount: 99,
+  amount_type: 1,
+  status: 0,
+  merchant_id: 2,
+  invoice_id: nil )
+
+Coupon.create!(
+  name: "Super Sweet Coupon #2",
+  code: "Random Dollar Amt Off",
+  amount: rand(0..99),
+  amount_type: 1,
+  status: 0,
+  merchant_id: 2,
   invoice_id: nil )
 
 puts " "
