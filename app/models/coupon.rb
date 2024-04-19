@@ -13,4 +13,12 @@ class Coupon < ApplicationRecord
 
   enum amount_type: [:dollar, :percent]
   enum status: [:enabled, :disabled]
+
+  def formatted_amount
+    if amount_type == "dollar"
+      "$#{amount} OFF!"
+    elsif amount_type == "percent"
+      "#{amount}% OFF!"
+    end
+  end
 end

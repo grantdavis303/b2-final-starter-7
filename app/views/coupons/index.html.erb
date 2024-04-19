@@ -1,0 +1,13 @@
+<%= render partial: "shared/nav" %>
+
+<h1> <%= @merchant.name %> Coupons </h1>
+
+<section class="merchant_coupons">
+  <% @merchant.coupons.each do |coupon| %>
+    <section id="merchant_coupon_<%= coupon.id %>">
+      <%= link_to coupon.name, merchant_coupon_path(@merchant, coupon) %>
+      <p> <%= coupon.name %> </p>
+      <p> <%= coupon.formatted_amount %> </p>
+    </section>
+  <% end %>
+</section>
