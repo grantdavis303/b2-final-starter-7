@@ -2,12 +2,17 @@
 
 <h1> <%= @merchant.name %> Coupons </h1>
 
+<section class="new_merchant_coupon">
+  <%= link_to "Create Coupon", new_merchant_coupon_path(@merchant) %>
+</section>
+
+<br>
+
 <section class="merchant_coupons">
   <% @merchant.coupons.each do |coupon| %>
     <section id="merchant_coupon_<%= coupon.id %>">
       <%= link_to coupon.name, merchant_coupon_path(@merchant, coupon) %>
-      <p> <%= coupon.name %> </p>
-      <p> <%= coupon.formatted_amount %> </p>
+      <p><b> <%= coupon.formatted_amount %> </b></p>
     </section>
   <% end %>
 </section>
