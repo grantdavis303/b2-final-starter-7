@@ -4,10 +4,10 @@ class CreateCoupons < ActiveRecord::Migration[7.1]
       t.string :name
       t.string :code
       t.integer :amount
-      t.integer :type
+      t.integer :amount_type
       t.integer :status
       t.references :merchant, null: false, foreign_key: true
-      t.references :invoice, null: false, foreign_key: true # delete null: false?
+      t.references :invoice, foreign_key: true # Deleted null: false
 
       t.timestamps
     end

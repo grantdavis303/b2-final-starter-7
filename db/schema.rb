@@ -18,10 +18,10 @@ ActiveRecord::Schema[7.1].define(version: 2024_04_19_133425) do
     t.string "name"
     t.string "code"
     t.integer "amount"
-    t.integer "type"
+    t.integer "amount_type"
     t.integer "status"
     t.bigint "merchant_id", null: false
-    t.bigint "invoice_id", null: false
+    t.bigint "invoice_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["invoice_id"], name: "index_coupons_on_invoice_id"

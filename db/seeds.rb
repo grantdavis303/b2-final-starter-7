@@ -16,18 +16,20 @@ Coupon.create!(
   name: "Coupon 1",
   code: "$50_OFF_ALL",
   amount: 50,
-  type: 0,
+  amount_type: 0,
   status: 0,
-  merchant_id: 1 )
+  merchant_id: 1,
+  invoice_id: nil )
 
 print "."
 Coupon.create!(
   name: "Coupon 2",
   code: "25%_OFF_SELECT",
   amount: 25,
-  type: 1,
+  amount_type: 1,
   status: 0,
-  merchant_id: 1 )
+  merchant_id: 1,
+  invoice_id: nil )
 
 puts " "
 puts "Coupons Created Successfully"
