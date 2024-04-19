@@ -10,6 +10,6 @@ class Coupon < ApplicationRecord
   belongs_to :merchant
   belongs_to :invoice, optional: true
 
-  enum type: ["percent", "dollar"]
+  enum type: ["dollar", "percent"]
   enum status: ["enabled", "disabled"]
 end
