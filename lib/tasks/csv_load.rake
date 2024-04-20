@@ -91,3 +91,16 @@ namespace :csv_load do
       end
    end
 end
+
+namespace :link do
+  task :invoices_and_coupons => :environment do
+    @invoice_1 = Invoice.find(29)
+    @invoice_1.update(coupon_id: 1)
+
+    @invoice_2 = Invoice.find(137)
+    @invoice_2.update(coupon_id: 1)
+
+    @invoice_3 = Invoice.find(593)
+    @invoice_3.update(coupon_id: 1)
+  end
+end

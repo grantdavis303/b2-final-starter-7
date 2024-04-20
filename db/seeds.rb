@@ -43,3 +43,9 @@ Coupon.create!(
 
 puts " "
 puts "Coupons Created Successfully"
+
+# Link Invoices to Coupons
+Rake::Task["link:invoices_and_coupons"].invoke
+
+puts " "
+puts "Coupons Added to Invoices"
