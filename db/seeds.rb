@@ -15,8 +15,7 @@ Coupon.create!(
   amount: 50,
   amount_type: 0,
   status: 0,
-  merchant_id: 1,
-  invoice_id: nil )
+  merchant_id: 1 )
 
 Coupon.create!(
   name: "Coupon 2",
@@ -24,8 +23,7 @@ Coupon.create!(
   amount: 25,
   amount_type: 1,
   status: 0,
-  merchant_id: 1,
-  invoice_id: nil )
+  merchant_id: 1 )
 
 Coupon.create!(
   name: "Super Sweet Coupon #1",
@@ -33,8 +31,7 @@ Coupon.create!(
   amount: 99,
   amount_type: 1,
   status: 0,
-  merchant_id: 2,
-  invoice_id: nil )
+  merchant_id: 2 )
 
 Coupon.create!(
   name: "Super Sweet Coupon #2",
@@ -42,8 +39,7 @@ Coupon.create!(
   amount: rand(10..75),
   amount_type: 1,
   status: 0,
-  merchant_id: 2,
-  invoice_id: nil )
+  merchant_id: 2 )
 
 puts " "
 puts "Coupons Created Successfully"

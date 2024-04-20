@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe "coupon show" do
+RSpec.describe "coupon show page" do
   before :each do
     @merchant1 = Merchant.create!(name: "Hair Care")
 
@@ -46,8 +46,7 @@ RSpec.describe "coupon show" do
       amount: 50,
       amount_type: 0,
       status: 0,
-      merchant_id: @merchant1.id,
-      invoice_id: nil )
+      merchant_id: @merchant1.id )
     
     @coupon_2 = Coupon.create!(
       name: "Coupon 2",
@@ -55,13 +54,27 @@ RSpec.describe "coupon show" do
       amount: 25,
       amount_type: 1,
       status: 0,
-      merchant_id: @merchant1.id,
-      invoice_id: nil )
+      merchant_id: @merchant1.id )
 
     visit merchant_coupon_path(@merchant1, @coupon_1)
   end
 
-  it "shows the coupon name" do
-    expect(page).to have_content(@merchant1.name)
+  # User Story 3 
+  it "has the coupon name, code, status, and count of usage" do
+    # As a merchant, when I visit a merchant's coupon show page
+    within ".coupon_information" do
+      # I see that coupon's name
+      expect(page).to have_content(@coupon_1.name)
+      # I see that coupon's code
+      expect(page).to have_content(@coupon_1.code)
+      # And I see the percent/dollar off value      
+      expect(page).to have_content(@coupon_1.formatted_amount)
+      # As well as its status (active or inactive)      
+      expect(page).to have_content(@coupon_1.status)
+      # And I see a count of how many times that coupon has been used.
+      # expect(page).to have_content(@coupon_1.usage_count)      
+    end
+    # (Note: "use" of a coupon should be limited to successful transactions.)
   end
+
 end

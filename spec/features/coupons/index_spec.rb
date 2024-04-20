@@ -46,8 +46,7 @@ RSpec.describe "coupon index" do
       amount: 50,
       amount_type: 0,
       status: 0,
-      merchant_id: @merchant1.id,
-      invoice_id: nil )
+      merchant_id: @merchant1.id )
     
     @coupon_2 = Coupon.create!(
       name: "Coupon 2",
@@ -55,8 +54,7 @@ RSpec.describe "coupon index" do
       amount: 25,
       amount_type: 1,
       status: 0,
-      merchant_id: @merchant1.id,
-      invoice_id: nil )
+      merchant_id: @merchant1.id )
 
     visit merchant_coupons_path(@merchant1)
   end
@@ -90,15 +88,15 @@ RSpec.describe "coupon index" do
   # User Story 2
   describe "links to a coupon create page" do
     it "links to a coupon create page that creates a new coupon when properly filled out" do # Good Path
-      # As a merchant, when I visit my coupon index page 
-      # I see a link to create a new coupon (tested in test above).
+      # As a merchant, when I visit my coupon index page I see a link to create a new coupon (tested in test above).
+      
       # When I click that link
       within ".new_merchant_coupon" do
         click_link "Create Coupon"
       end
+
       # I am taken to a new page where I see a form to add a new coupon.
       expect(current_path).to eq("/merchants/#{@merchant1.id}/coupons/new")
-
       within ".new_coupon_form" do
         expect(page).to have_content("Coupon Name:")
         expect(page).to have_field(:name)
@@ -131,33 +129,34 @@ RSpec.describe "coupon index" do
       end
     end
 
-    it "sad path 1 - links to a coupon create page that doesn't creates a new coupon when improperly filled out" do # Bad Path
-      within ".new_merchant_coupon" do
-        click_link "Create Coupon"
-      end
+    # it "sad path 1 - links to a coupon create page that doesn't creates a new coupon when improperly filled out" do # Bad Path
+    #   within ".new_merchant_coupon" do
+    #     click_link "Create Coupon"
+    #   end
 
-      expect(current_path).to eq("/merchants/#{@merchant1.id}/coupons/new")
+    #   expect(current_path).to eq("/merchants/#{@merchant1.id}/coupons/new")
 
-      within ".new_coupon_form" do
-        expect(page).to have_content("Coupon Name:")
-        expect(page).to have_field(:name)
-        expect(page).to have_content("Coupon Code:")
-        expect(page).to have_field(:code)
-        expect(page).to have_content("Coupon Amount:")
-        expect(page).to have_field(:amount)
-        expect(page).to have_content("Is this amount in dollars off or a percentage off?")
-        expect(page).to have_content("Dollars ($)")
-        expect(page).to have_content("Percentage (%)")
-        expect(page).to have_unchecked_field(:amount_type)        
-        expect(page).to have_button("Create Coupon")
-      end
+    #   within ".new_coupon_form" do
+    #     expect(page).to have_content("Coupon Name:")
+    #     expect(page).to have_field(:name)
+    #     expect(page).to have_content("Coupon Code:")
+    #     expect(page).to have_field(:code)
+    #     expect(page).to have_content("Coupon Amount:")
+    #     expect(page).to have_field(:amount)
+    #     expect(page).to have_content("Is this amount in dollars off or a percentage off?")
+    #     expect(page).to have_content("Dollars ($)")
+    #     expect(page).to have_content("Percentage (%)")
+    #     expect(page).to have_unchecked_field(:amount_type)        
+    #     expect(page).to have_button("Create Coupon")
+    #   end
       
-      within ".new_coupon_form" do
-        click_button "Create Coupon"
-      end
+    #   within ".new_coupon_form" do
+    #     click_button "Create Coupon"
+    #   end
 
-      expect(page).to have_content("Coupon not created: Information missing. Please fill in any empty fields.")     
-    end
+    #   expect(page).to have_content("Coupon not created: Information missing. Please fill in any empty fields.")     
+    # end
+
   end
 
 

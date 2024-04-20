@@ -46,8 +46,7 @@ RSpec.describe "merchant dashboard" do
       amount: 50,
       amount_type: 0,
       status: 0,
-      merchant_id: @merchant1.id,
-      invoice_id: nil )
+      merchant_id: @merchant1.id )
     
     @coupon_2 = Coupon.create!(
       name: "Coupon 2",
@@ -55,8 +54,7 @@ RSpec.describe "merchant dashboard" do
       amount: 25,
       amount_type: 1,
       status: 0,
-      merchant_id: @merchant1.id,
-      invoice_id: nil )
+      merchant_id: @merchant1.id )
 
     visit merchant_dashboard_index_path(@merchant1)
   end

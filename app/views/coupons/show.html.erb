@@ -1,5 +1,15 @@
 <%= render partial: "shared/nav" %>
 
-<h1> <%= @coupon.name %> </h1>
+<section class="coupon_information">
+  <h1> <%= @coupon.name %> </h1>
+  <h3> Coupon Code: <code class="coupon_code"> <%= @coupon.code %> </code> </h3>
 
-<p> Wahoo! This is the fucking show page! </p>
+  <h3> Amount </h3>
+  <p> <%= @coupon.formatted_amount %> </p>
+
+  <h3> Status </h3>
+  <p> This coupon is <%= @coupon.status %> </p>
+
+  <h3> Usage </h3>
+  <p> This coupon has been used <%= @coupon.status %> times </p>
+</section>
