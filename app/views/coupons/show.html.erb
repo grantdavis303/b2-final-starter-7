@@ -23,13 +23,17 @@
       <%= form.submit "Deactivate Coupon" %>
     <% end %>
 
-  <% else %>
+  <% elsif @coupon.status == "disabled" && @merchant.enabled_coupons_count < 5 %>
 
     <!-- Activate Button -->
     <%= form_with url: merchant_coupon_path(@merchant, @coupon), method: :patch, data: {turbo: false} do |form| %>
       <%= form.hidden_field :new_status, :value => :enabled %>
       <%= form.submit "Activate Coupon" %>
     <% end %>
+
+  <% else %>
+
+    <p class="error_text"> Unable to enable coupon. Please disable another coupon to enable this one. </p>
 
   <% end %>
 </section>
