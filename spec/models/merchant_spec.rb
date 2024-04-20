@@ -146,5 +146,21 @@ describe Merchant do
       expect(@merchant1.disabled_items).to eq([@item_2, @item_3, @item_4, @item_7, @item_8])
       expect(@merchant2.disabled_items).to eq([@item_5, @item_6])
     end
+
+    it "#active_coupons" do
+      @merchant1 = Merchant.create!(name: "Hair Care")
+      @coupon_1 = Coupon.create!(name: "Coupon 1", code: "$50_OFF_ALL", amount: 50, amount_type: 0, status: 0, merchant_id: @merchant1.id )
+      @coupon_2 = Coupon.create!(name: "Coupon 2", code: "25%_OFF_SELECT", amount: 25, amount_type: 1, status: 1, merchant_id: @merchant1.id )
+      @coupon_3 = Coupon.create!(name: "Coupon 3", code: "65%_OFF", amount: 65, amount_type: 0, status: 0, merchant_id: @merchant1.id )
+      expect(@merchant1.active_coupons).to eq([@coupon_1, @coupon_3])
+    end
+
+    it "#inactive_coupons" do
+      @merchant1 = Merchant.create!(name: "Hair Care")
+      @coupon_1 = Coupon.create!(name: "Coupon 1", code: "$50_OFF_ALL", amount: 50, amount_type: 0, status: 1, merchant_id: @merchant1.id )
+      @coupon_2 = Coupon.create!(name: "Coupon 2", code: "25%_OFF_SELECT", amount: 25, amount_type: 1, status: 1, merchant_id: @merchant1.id )
+      @coupon_3 = Coupon.create!(name: "Coupon 3", code: "65%_OFF", amount: 65, amount_type: 0, status: 0, merchant_id: @merchant1.id )
+      expect(@merchant1.inactive_coupons).to eq([@coupon_1, @coupon_2])
+    end
   end
 end

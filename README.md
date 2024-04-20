@@ -28,7 +28,7 @@ $ rails db:{drop,create,migrate,seed}
 
 
 - [x] User Story 0 - Deploy to Heroku
-- [ ] User Story 1 - Merchant Coupons Index
+- [x] User Story 1 - Merchant Coupons Index
 - [ ] User Story 2 - Merchant Coupon Create
 - [ ] User Story 3 - Merchant Coupon Show Page
 - [ ] User Story 4 - Merchant Coupon Deactivate
@@ -48,4 +48,7 @@ Problem: Admin Invoices Index Page:53 will sometimes throw an error because the 
 ```
 ```
 Had to change the schema to allow nil values for invoice_id, and thus had to change some of the validation testing to "allow blank and nil"
+```
+```
+Went back and added a migration for coupon_id to appear in invoices
 ```
