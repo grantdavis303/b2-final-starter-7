@@ -11,7 +11,7 @@
 <section class="merchant_coupons">
 
   <section class="merchant_coupons_enabled">
-  <h1> Enabled Coupons (<%= @merchant.enabled_coupons.count %>) </h1>
+  <h1> Enabled Coupons (<%= @merchant.enabled_coupons_count %>) </h1>
     <% @merchant.enabled_coupons.each do |coupon| %>
       <section id="merchant_coupon_<%= coupon.id %>">
         <%= link_to coupon.name, merchant_coupon_path(@merchant, coupon) %>
@@ -21,7 +21,7 @@
   </section>
 
   <section class="merchant_coupons_disabled">
-  <h1> Disabled Coupons (<%= @merchant.disabled_coupons.count %>) </h1>
+  <h1> Disabled Coupons (<%= @merchant.disabled_coupons_count %>) </h1>
     <% @merchant.disabled_coupons.each do |coupon| %>
       <section id="merchant_coupon_<%= coupon.id %>">
         <%= link_to coupon.name, merchant_coupon_path(@merchant, coupon) %>

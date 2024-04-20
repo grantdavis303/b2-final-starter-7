@@ -67,4 +67,12 @@ class Merchant < ApplicationRecord
   def disabled_coupons
     coupons.where(status: 1)
   end
+
+  def enabled_coupons_count
+    enabled_coupons.count
+  end
+
+  def disabled_coupons_count
+    disabled_coupons.count
+  end
 end
