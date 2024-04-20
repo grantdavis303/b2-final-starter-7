@@ -5,9 +5,9 @@ class Coupon < ApplicationRecord
                         :amount_type,
                         :status,
                         :merchant_id
-
+                        
   validates :invoice_id, presence: true, allow_blank: true
-  
+
   belongs_to :merchant
   belongs_to :invoice, optional: true
 
