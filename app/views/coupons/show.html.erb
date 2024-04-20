@@ -13,3 +13,23 @@
   <h3> Usage </h3>
   <p> This coupon has been used <%= @coupon.status %> times </p>
 </section>
+
+<section class="coupon_buttons">
+  <% if @coupon.status == "enabled" %>
+
+    <!-- Deactivate Button -->
+    <%= form_with url: merchant_coupon_path(@merchant, @coupon), method: :patch, data: {turbo: false} do |form| %>
+      <%= form.hidden_field :new_status, :value => :disabled %>
+      <%= form.submit "Deactivate Coupon" %>
+    <% end %>
+
+  <% else %>
+
+    <!-- Activate Button -->
+    <%= form_with url: merchant_coupon_path(@merchant, @coupon), method: :patch, data: {turbo: false} do |form| %>
+      <%= form.hidden_field :new_status, :value => :enabled %>
+      <%= form.submit "Activate Coupon" %>
+    <% end %>
+
+  <% end %>
+</section>

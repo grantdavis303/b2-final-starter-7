@@ -1,12 +1,12 @@
 class Coupon < ApplicationRecord
   validates_presence_of :name,
-                        :code, #unique
+                        :code,
                         :amount,
                         :amount_type,
                         :status,
                         :merchant_id
 
-  # validate uniqunnss of code
+  validates_uniqueness_of :code
   validates_numericality_of :amount                        
 
   belongs_to :merchant

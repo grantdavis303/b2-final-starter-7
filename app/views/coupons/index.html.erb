@@ -9,10 +9,25 @@
 <br>
 
 <section class="merchant_coupons">
-  <% @merchant.coupons.each do |coupon| %>
-    <section id="merchant_coupon_<%= coupon.id %>">
-      <%= link_to coupon.name, merchant_coupon_path(@merchant, coupon) %>
-      <p><b> <%= coupon.formatted_amount %> </b></p>
-    </section>
-  <% end %>
+
+  <section class="merchant_coupons_enabled">
+  <h1> Enabled Coupons (<%= @merchant.enabled_coupons.count %>) </h1>
+    <% @merchant.enabled_coupons.each do |coupon| %>
+      <section id="merchant_coupon_<%= coupon.id %>">
+        <%= link_to coupon.name, merchant_coupon_path(@merchant, coupon) %>
+        <p><b> <%= coupon.formatted_amount %> </b></p>
+      </section>
+    <% end %>
+  </section>
+
+  <section class="merchant_coupons_disabled">
+  <h1> Disabled Coupons (<%= @merchant.disabled_coupons.count %>) </h1>
+    <% @merchant.disabled_coupons.each do |coupon| %>
+      <section id="merchant_coupon_<%= coupon.id %>">
+        <%= link_to coupon.name, merchant_coupon_path(@merchant, coupon) %>
+        <p><b> <%= coupon.formatted_amount %> </b></p>
+      </section>
+    <% end %>
+  </section>
+
 </section>

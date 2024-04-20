@@ -40,7 +40,17 @@ class CouponsController < ApplicationController
     # end
 
     # elsif params[:code]
+  end
 
+  def update
+    @merchant = Merchant.find(params[:merchant_id])
+    @coupon = Coupon.find(params[:id])
+
+    @coupon.update({
+      status: params[:new_status]
+    })
+
+    redirect_to merchant_coupon_path(@merchant, @coupon)
   end
 
   private
