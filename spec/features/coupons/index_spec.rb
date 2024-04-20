@@ -131,10 +131,32 @@ RSpec.describe "coupon index" do
       end
     end
 
-    it "links to a coupon create page that doesn't creates a new coupon when improperly filled out" do # Bad Path
-      # * Sad Paths to consider: 
-      # 1. This Merchant already has 5 active coupons
-      # 2. Coupon code entered is NOT unique      
+    it "sad path 1 - links to a coupon create page that doesn't creates a new coupon when improperly filled out" do # Bad Path
+      within ".new_merchant_coupon" do
+        click_link "Create Coupon"
+      end
+
+      expect(current_path).to eq("/merchants/#{@merchant1.id}/coupons/new")
+
+      within ".new_coupon_form" do
+        expect(page).to have_content("Coupon Name:")
+        expect(page).to have_field(:name)
+        expect(page).to have_content("Coupon Code:")
+        expect(page).to have_field(:code)
+        expect(page).to have_content("Coupon Amount:")
+        expect(page).to have_field(:amount)
+        expect(page).to have_content("Is this amount in dollars off or a percentage off?")
+        expect(page).to have_content("Dollars ($)")
+        expect(page).to have_content("Percentage (%)")
+        expect(page).to have_unchecked_field(:amount_type)        
+        expect(page).to have_button("Create Coupon")
+      end
+      
+      within ".new_coupon_form" do
+        click_button "Create Coupon"
+      end
+
+      expect(page).to have_content("Coupon not created: Information missing. Please fill in any empty fields.")     
     end
   end
 
