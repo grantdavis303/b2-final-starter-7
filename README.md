@@ -8,7 +8,6 @@ To set up this code locally, run the following commands:
 ```
 $ bundle install
 $ rails db:{drop,create,migrate,seed}
-# $ bundle exec rake csv_load:all
 ```
 
 ### Evaluation
@@ -28,14 +27,32 @@ $ rails db:{drop,create,migrate,seed}
 
 
 - [x] User Story 0 - Deploy to Heroku
+
 - [x] User Story 1 - Merchant Coupons Index
-- [ ] User Story 2 - Merchant Coupon Create
-- [ ] User Story 3 - Merchant Coupon Show Page
-- [ ] User Story 4 - Merchant Coupon Deactivate
-- [ ] User Story 5 - Merchant Coupon Activate
-- [ ] User Story 6 - Merchant Coupon Index Sorted
+
+- [ **needs sad path** ] User Story 2 - Merchant Coupon Create
+
+- [ **needs correct usage** ] User Story 3 - Merchant Coupon Show Page
+
+- [ **need sad path** ] User Story 4 - Merchant Coupon Deactivate
+
+- [x] User Story 5 - Merchant Coupon Activate
+
+- [x] User Story 6 - Merchant Coupon Index Sorted
+
 - [ ] User Story 7 - Merchant Invoice Show Page: Subtotal and Grand Total Revenues 
+
 - [ ] User Story 8 - Admin Invoice Show Page: Subtotal and Grand Total Revenues
+
+### Goals
+
+- [ ] - A merchant can have a maximum of 5 activated coupons in the system at one time.
+
+- [ ] A Coupon has a name, unique code (e.g. “BOGO50”), and either percent-off or dollar-off value. The coupon’s code must be unique in the whole database.
+
+- [ ] If a coupon’s dollar value (ex. “$10 off”) exceeds the total cost of that merchant’s items on the invoice, the grand total for that merchant’s items should then be $0. (In other words, the merchant will never owe money to a customer.)
+
+- [ ] A coupon code from a Merchant only applies to Items sold by that Merchant.
 
 ### Notes
 
