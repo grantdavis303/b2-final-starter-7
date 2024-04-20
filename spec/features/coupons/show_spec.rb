@@ -114,4 +114,21 @@ RSpec.describe "coupon show page" do
       expect(page).to have_content("enabled")
     end
   end
+
+  # Sad Path 1
+  it "cannot activate a coupon when there are five active ones" do
+    @coupon_3 = Coupon.create!( name: "Coupon 3", code: "$45_OFF_ALL", amount: 45, amount_type: 0, status: 0, merchant_id: @merchant1.id )
+    @coupon_4 = Coupon.create!( name: "Coupon 4", code: "$25_OFF_ALL", amount: 25, amount_type: 0, status: 0, merchant_id: @merchant1.id )
+    @coupon_5 = Coupon.create!( name: "Coupon 5", code: "$20_OFF_ALL", amount: 20, amount_type: 0, status: 0, merchant_id: @merchant1.id )
+    @coupon_6 = Coupon.create!( name: "Coupon 6", code: "$10_OFF_ALL", amount: 10, amount_type: 0, status: 0, merchant_id: @merchant1.id )
+
+    visit merchant_coupon_path(@merchant1, @coupon_2)
+
+    within ".coupon_buttons" do
+      expect(page).not_to have_button("Activate Coupon")
+      expect(page).to have_content("Unable to activate coupon. Please deactivate a coupon and try again.")
+    end
+  end
+
+
 end
