@@ -5,7 +5,7 @@ RSpec.describe Coupon, type: :model do
     it { should belong_to(:merchant) }
   end
 
-  describe "validations" do
+  describe "validations" do  
     it { should validate_presence_of(:name) }
     it { should validate_presence_of(:code) }  
     it { should validate_presence_of(:amount) }
@@ -13,6 +13,7 @@ RSpec.describe Coupon, type: :model do
     it { should validate_presence_of(:status) }
     it { should validate_presence_of(:merchant_id) }
     # validate uniqueness of code
+    #it { should validate_uniqueness_of(:code).on(:create) }
     it { should validate_numericality_of(:amount) }
   end
 

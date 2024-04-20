@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe "coupon index" do
+RSpec.describe "coupon index page" do
   before :each do
     @merchant1 = Merchant.create!(name: "Hair Care")
 
@@ -53,7 +53,23 @@ RSpec.describe "coupon index" do
       code: "25%_OFF_SELECT",
       amount: 25,
       amount_type: 1,
+      status: 1,
+      merchant_id: @merchant1.id )
+
+    @coupon_3 = Coupon.create!(
+      name: "Coupon 3",
+      code: "86%_OFF_ALL",
+      amount: 86,
+      amount_type: 1,
       status: 0,
+      merchant_id: @merchant1.id )
+    
+    @coupon_4 = Coupon.create!(
+      name: "Coupon 4",
+      code: "$12_OFF_SELECT",
+      amount: 12,
+      amount_type: 0,
+      status: 1,
       merchant_id: @merchant1.id )
 
     visit merchant_coupons_path(@merchant1)
@@ -156,11 +172,21 @@ RSpec.describe "coupon index" do
 
     #   expect(page).to have_content("Coupon not created: Information missing. Please fill in any empty fields.")     
     # end
-
   end
 
+  # User Story 6
+  it "sorted items based on if they're enable or disabled" do
+    # As a merchant, when I visit my coupon index page
+    # I can see that my coupons are separated between active and inactive coupons. 
+    within ".merchant_coupons_enabled" do
+      expect(page).to have_content(@coupon_1.name)
+      expect(page).to have_content(@coupon_3.name)
+    end
 
-
-
+    within ".merchant_coupons_disabled" do
+      expect(page).to have_content(@coupon_2.name)
+      expect(page).to have_content(@coupon_4.name)
+    end
+  end
 
 end

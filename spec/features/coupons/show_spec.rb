@@ -53,15 +53,15 @@ RSpec.describe "coupon show page" do
       code: "25%_OFF_SELECT",
       amount: 25,
       amount_type: 1,
-      status: 0,
+      status: 1,
       merchant_id: @merchant1.id )
-
-    visit merchant_coupon_path(@merchant1, @coupon_1)
   end
 
   # User Story 3 
   it "has the coupon name, code, status, and count of usage" do
     # As a merchant, when I visit a merchant's coupon show page
+    visit merchant_coupon_path(@merchant1, @coupon_1)
+
     within ".coupon_information" do
       # I see that coupon's name
       expect(page).to have_content(@coupon_1.name)
@@ -77,4 +77,41 @@ RSpec.describe "coupon show page" do
     # (Note: "use" of a coupon should be limited to successful transactions.)
   end
 
+  # User Story 4
+  it "has button to deactivate a coupon" do
+    visit merchant_coupon_path(@merchant1, @coupon_1)
+    # As a merchant, when I visit one of my active coupon's show pages 
+    # I see a button to deactivate that coupon
+    within ".coupon_buttons" do
+      expect(page).to have_button("Deactivate Coupon")
+    end
+    # When I click that button, I'm taken back to the coupon show page 
+    click_button("Deactivate Coupon")
+    expect(current_path).to eq(merchant_coupon_path(@merchant1, @coupon_1))
+
+    # And I can see that its status is now listed as 'inactive'.
+    within ".coupon_information" do
+      expect(page).to have_content("disabled")
+    end
+
+    # * Sad Paths to consider: 
+    # 1. A coupon cannot be deactivated if there are any pending invoices with that coupon.
+  end
+
+  # User Story 5
+  it "has button to activate a coupon" do
+    visit merchant_coupon_path(@merchant1, @coupon_2)
+    # As a merchant, when I visit one of my inactive coupon show pages
+    # I see a button to activate that coupon
+    within ".coupon_buttons" do
+      expect(page).to have_button("Activate Coupon")
+    end
+    # When I click that button, I'm taken back to the coupon show page
+    click_button("Activate Coupon")
+    expect(current_path).to eq(merchant_coupon_path(@merchant1, @coupon_2))
+    # And I can see that its status is now listed as 'active'.
+    within ".coupon_information" do
+      expect(page).to have_content("enabled")
+    end
+  end
 end
