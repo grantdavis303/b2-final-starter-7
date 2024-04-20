@@ -23,6 +23,6 @@ class Coupon < ApplicationRecord
   end
 
   def usage_count
-    # merchant.invoices.where("coupon_id")
+    merchant.invoices.count
   end
 end
