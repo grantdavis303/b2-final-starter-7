@@ -18,10 +18,18 @@ class CouponsController < ApplicationController
 
     if new_coupon.save # implement sad path testing
       redirect_to merchant_coupons_path(@merchant)
+    elsif params[:amount].class != Integer
+      flash[:notice] = "Please enter a number for amount."
+      render :new
+    elsif @merchant.active_coupons.count >= 5 
+      flash[:notice] = "Coupon not created: Active Coupons max amount reached. Please deactivate other coupons to create another."
+      render :new     
     else
       flash[:notice] = "Coupon not created: Information missing. Please fill in any empty fields."
       render :new
     end
+
+    # How to get flash to go away?
 
     # if validates_uniqueness_of :number == "true"
     #   puts "this value is unique and should be added to the DB"
@@ -30,7 +38,7 @@ class CouponsController < ApplicationController
     # end
 
     # elsif params[:code]
-    # elsif @merchant.active_coupons.count >= 5
+
   end
 
   private

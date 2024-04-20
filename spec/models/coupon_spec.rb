@@ -14,6 +14,7 @@ RSpec.describe Coupon, type: :model do
     it { should validate_presence_of(:status) }
     it { should validate_presence_of(:merchant_id) }
     it { should allow_value("", nil).for(:invoice_id) }
+    it { should validate_numericality_of(:amount) }
   end
 
   describe "instance methods" do

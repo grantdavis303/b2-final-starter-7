@@ -7,6 +7,7 @@ class Coupon < ApplicationRecord
                         :merchant_id
                         
   validates :invoice_id, presence: true, allow_blank: true
+  validates_numericality_of :amount
 
   belongs_to :merchant
   belongs_to :invoice, optional: true
