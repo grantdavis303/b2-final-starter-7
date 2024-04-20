@@ -145,33 +145,69 @@ RSpec.describe "coupon index page" do
       end
     end
 
-    # it "sad path 1 - links to a coupon create page that doesn't creates a new coupon when improperly filled out" do # Bad Path
-    #   within ".new_merchant_coupon" do
-    #     click_link "Create Coupon"
-    #   end
-
-    #   expect(current_path).to eq("/merchants/#{@merchant1.id}/coupons/new")
-
-    #   within ".new_coupon_form" do
-    #     expect(page).to have_content("Coupon Name:")
-    #     expect(page).to have_field(:name)
-    #     expect(page).to have_content("Coupon Code:")
-    #     expect(page).to have_field(:code)
-    #     expect(page).to have_content("Coupon Amount:")
-    #     expect(page).to have_field(:amount)
-    #     expect(page).to have_content("Is this amount in dollars off or a percentage off?")
-    #     expect(page).to have_content("Dollars ($)")
-    #     expect(page).to have_content("Percentage (%)")
-    #     expect(page).to have_unchecked_field(:amount_type)        
-    #     expect(page).to have_button("Create Coupon")
-    #   end
+    # Sad Path 1 
+    it "error when no field is filled in" do 
+      within ".new_merchant_coupon" do
+        click_link "Create Coupon"
+      end
       
-    #   within ".new_coupon_form" do
-    #     click_button "Create Coupon"
-    #   end
+      within ".new_coupon_form" do
+        click_button "Create Coupon"
+      end
 
-    #   expect(page).to have_content("Coupon not created: Information missing. Please fill in any empty fields.")     
-    # end
+      expect(page).to have_content("Name can't be blank, Code can't be blank, Amount can't be blank, Amount type can't be blank, and Amount is not a number")
+    end
+
+    # Sad Path 2 
+    it "error when all but one field is filled in" do 
+      within ".new_merchant_coupon" do
+        click_link "Create Coupon"
+      end
+      
+      within ".new_coupon_form" do
+        fill_in :code, with: "75OFFALL2024"
+        fill_in :amount, with: 75
+        choose :amount_type_dollar
+        click_button "Create Coupon"
+      end
+
+      expect(page).to have_content("Name can't be blank")
+    end
+
+    # Sad Path 3
+    it "error when amount is not a number" do 
+      within ".new_merchant_coupon" do
+        click_link "Create Coupon"
+      end
+      
+      within ".new_coupon_form" do
+        fill_in :name, with: "Dope Fall Coupon 1"
+        fill_in :code, with: "75OFFALL2024"
+        fill_in :amount, with: "Seventy Five"
+        choose :amount_type_dollar
+        click_button "Create Coupon"
+      end
+
+      expect(page).to have_content("Amount is not a number")
+    end
+
+    # Sad Path 4
+    it "error when code is not unique" do 
+      within ".new_merchant_coupon" do
+        click_link "Create Coupon"
+      end
+      
+      within ".new_coupon_form" do
+        fill_in :name, with: "Dope Fall Coupon 1"
+        fill_in :code, with: "$50_OFF_ALL"
+        fill_in :amount, with: 75
+        choose :amount_type_dollar
+        click_button "Create Coupon"
+      end
+
+      expect(page).to have_content("Code has already been taken")
+    end
+
   end
 
   # User Story 6
