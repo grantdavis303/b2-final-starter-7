@@ -5,6 +5,7 @@
     <p class='col-12'>Invoice #<%= @invoice.id %></p>
   </div>
 
+<section class="status">
   <strong>Status: </strong>
     <section id="status-update-<%= @invoice.id %>">
       <%= form_with model: @invoice, url: admin_invoice_path(@invoice), method: :patch do |f| %>
@@ -14,7 +15,7 @@
       <% end %>
   <p>Created on: <%= @invoice.created_at.strftime("%A, %B %d, %Y") %>
   <p>Total Revenue: <%= number_to_currency(@invoice.total_revenue) %>
-
+</section>
   <h4>Customer:</h4>
     <%= @invoice.customer.first_name %> <%= @invoice.customer.last_name %><br>
     <%= @invoice.customer.address %><br>
@@ -45,5 +46,35 @@
       </tbody>
     </table>
   </section>
+
+<h4> Coupons </h4>
+
+  <!-- If a coupon wasn't applied to this invoice -->
+  <% if @invoice.coupon_id == nil %>
+
+    <p> No coupon was used on this invoice. </p>
+
+  <!-- If a coupon was applied to this invoice -->
+  <% else %>
+
+    <section class="applied_coupon_info">
+      <p> This coupon was used on this invoice: <%= @invoice.coupon.name%> </p>
+      <code class="coupon_code"> <%= @invoice.coupon.code %> </code>
+    </section>
+
+  <% end %>
+
+<section class="invoice_totals">
+  <h3> Subtotal: $<%= number_with_precision(@invoice.total_revenue / 100, :precision => 2, :delimiter => ",") %> </h3>
+    <% if @invoice.coupon_id != nil %>
+      <% if @invoice.coupon.amount_type == "dollar" %>
+        <h3> Grand Total: <span class="final_revenue">$<%= number_with_precision(@invoice.calculate_dollar_grand_total / 100, :precision => 2, :delimiter => ",") %> </span></h3>
+      <% else @invoice.coupon.amount_type == "percent" %>
+        <h3> Grand Total: <span class="final_revenue">$<%= number_with_precision(@invoice.calculate_percent_grand_total / 100, :precision => 2, :delimiter => ",") %> </span>
+      <% end %>
+    <% else %>
+      <h3> Grand Total: <span class="final_revenue">$<%= number_with_precision(@invoice.total_revenue / 100, :precision => 2, :delimiter => ",") %> </span>
+    <% end %>
+</section>
 
 </body>
