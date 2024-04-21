@@ -1,9 +1,9 @@
 # [Coupon Codes](https://young-badlands-19401-fff924f631aa.herokuapp.com/)
 ### Grant Davis
 
-Hi, my name is Grant and this is my Coupon Codes project.
+Hi, my name is Grant and this is my Coupon Codes project. This is my final project for Mod 2.
 
-To set up this code locally, run the following commands:
+To set up this code locally, run the following commands in your terminal:
 
 ```
 $ bundle install
@@ -25,16 +25,15 @@ $ rails db:{drop,create,migrate,seed}
 
 [Link to User Stories](https://backend.turing.edu/module2/projects/coupon_codes/#user-stories)
 
-
 - [x] User Story 0 - Deploy to Heroku
 
 - [x] User Story 1 - Merchant Coupons Index
 
-- [ **needs sad path** ] User Story 2 - Merchant Coupon Create
+- [x] User Story 2 - Merchant Coupon Create
 
-- [ **needs correct usage** ] User Story 3 - Merchant Coupon Show Page
+- [x] User Story 3 - Merchant Coupon Show Page
 
-- [ **need sad path** ] User Story 4 - Merchant Coupon Deactivate
+- [x] User Story 4 - Merchant Coupon Deactivate
 
 - [x] User Story 5 - Merchant Coupon Activate
 
@@ -45,10 +44,6 @@ $ rails db:{drop,create,migrate,seed}
 - [ ] User Story 8 - Admin Invoice Show Page: Subtotal and Grand Total Revenues
 
 ### Goals
-
-- [ ] - A merchant can have a maximum of 5 activated coupons in the system at one time.
-
-- [ ] A Coupon has a name, unique code (e.g. “BOGO50”), and either percent-off or dollar-off value. The coupon’s code must be unique in the whole database.
 
 - [ ] If a coupon’s dollar value (ex. “$10 off”) exceeds the total cost of that merchant’s items on the invoice, the grand total for that merchant’s items should then be $0. (In other words, the merchant will never owe money to a customer.)
 
