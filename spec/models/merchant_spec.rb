@@ -180,5 +180,14 @@ describe Merchant do
       @coupon_4 = Coupon.create!(name: "Coupon 4", code: "99%_OFF", amount: 99, amount_type: 0, status: 0, merchant_id: @merchant1.id )
       expect(@merchant1.disabled_coupons_count).to eq(2)
     end
+
+    it "#enabled_coupons_codes" do
+      @merchant1 = Merchant.create!(name: "Hair Care")
+      @coupon_1 = Coupon.create!(name: "Coupon 1", code: "$50_OFF_ALL", amount: 50, amount_type: 0, status: 0, merchant_id: @merchant1.id )
+      @coupon_2 = Coupon.create!(name: "Coupon 2", code: "25%_OFF_SELECT", amount: 25, amount_type: 1, status: 1, merchant_id: @merchant1.id )
+      @coupon_3 = Coupon.create!(name: "Coupon 3", code: "65%_OFF", amount: 65, amount_type: 0, status: 0, merchant_id: @merchant1.id )
+      @coupon_4 = Coupon.create!(name: "Coupon 4", code: "99%_OFF", amount: 99, amount_type: 1, status: 0, merchant_id: @merchant1.id )
+      expect(@merchant1.enabled_coupons_codes).to eq(["$50_OFF_ALL","65%_OFF", "99%_OFF"])
+    end
   end
 end
