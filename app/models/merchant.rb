@@ -75,4 +75,8 @@ class Merchant < ApplicationRecord
   def disabled_coupons_count
     disabled_coupons.count
   end
+
+  def enabled_coupons_codes
+    enabled_coupons.pluck("code")
+  end
 end

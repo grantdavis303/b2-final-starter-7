@@ -16,4 +16,20 @@ class Invoice < ApplicationRecord
   def total_revenue
     invoice_items.sum("unit_price * quantity")
   end
+
+  def calculate_dollar_grand_total
+    grand_total = self.total_revenue - (coupon.amount * 100) # Multiplying coupon amount by 100
+    if grand_total <= 0                                      # since the amount is in dollars
+      grand_total = 0                                        # and unit price on invoice is in cents
+    end
+    grand_total
+  end
+
+  def calculate_percent_grand_total
+    grand_total = self.total_revenue - ((coupon.amount.to_f / 100) * self.total_revenue)
+    if grand_total <= 0
+      grand_total = 0
+    end
+    grand_total
+  end
 end

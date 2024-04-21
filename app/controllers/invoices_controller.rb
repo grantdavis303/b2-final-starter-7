@@ -12,13 +12,14 @@ class InvoicesController < ApplicationController
   end
 
   def update
+    #binding.pry
     @invoice.update(invoice_params)
     redirect_to merchant_invoice_path(@merchant, @invoice)
   end
 
   private
   def invoice_params
-    params.require(:invoice).permit(:status)
+    params.permit(:status, :coupon) #equire(:invoice)
   end
 
   def find_invoice_and_merchant
@@ -30,3 +31,5 @@ class InvoicesController < ApplicationController
     @merchant = Merchant.find(params[:merchant_id])
   end
 end
+
+# @invoice.coupon_id to equal the new param, which is 
