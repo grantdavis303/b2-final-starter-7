@@ -128,7 +128,7 @@ RSpec.describe "invoices show" do
     end
   end
 
-  # Sad Paths
+  # Extra Tests for Percentage and Dollar Discounts
   it "discount is larger than total revenue - dollars" do
     visit merchant_invoice_path(@merchant1, @invoice_3)
 
