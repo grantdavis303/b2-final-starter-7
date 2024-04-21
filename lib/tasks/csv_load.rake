@@ -1,4 +1,5 @@
 require "csv"
+
 namespace :csv_load do
    task :customers => :environment do
       CSV.foreach("db/data/customers.csv", headers: true) do |row|
@@ -37,7 +38,7 @@ namespace :csv_load do
                            customer_id: row[1],
                            status:      status,
                            created_at:  row[4],
-                           updated_at:  row[5] })
+                           updated_at:  row[5]})
       end
       ActiveRecord::Base.connection.reset_pk_sequence!("invoices")
       puts "Invoices imported."
@@ -50,7 +51,7 @@ namespace :csv_load do
          elsif row.to_hash["result"] == "success"
             result = 1
          end
-         Transaction.create!({ id:                          row[0],
+         Transaction.create!({ id:                         row[0],
                               invoice_id:                  row[1],
                               credit_card_number:          row[2],
                               credit_card_expiration_date: row[3],
@@ -71,7 +72,7 @@ namespace :csv_load do
          elsif row.to_hash["status"] == "shipped"
             status = 2
          end
-         InvoiceItem.create!({ id:          row[0],
+         InvoiceItem.create!({ id:         row[0],
                               item_id:     row[1],
                               invoice_id:  row[2],
                               quantity:    row[3],
@@ -89,5 +90,37 @@ namespace :csv_load do
          Rake::Task["csv_load:#{task}".to_sym].invoke
       end
    end
+end
 
+namespace :link do
+  task :invoices_and_coupons => :environment do
+
+    # Merchant 1
+
+    @invoice_1 = Invoice.find(29)
+    @invoice_1.update(coupon_id: 1)
+
+    @invoice_2 = Invoice.find(137)
+    @invoice_2.update(coupon_id: 1)
+
+    @invoice_3 = Invoice.find(593)
+    @invoice_3.update(coupon_id: 1)
+
+    # Merchant 2
+
+    @invoice_4 = Invoice.find(45)
+    @invoice_4.update(coupon_id: 3)
+
+    @invoice_4 = Invoice.find(77)
+    @invoice_4.update(coupon_id: 3)
+
+    @invoice_4 = Invoice.find(121)
+    @invoice_4.update(coupon_id: 3)
+
+    @invoice_4 = Invoice.find(277)
+    @invoice_4.update(coupon_id: 3)
+
+    @invoice_4 = Invoice.find(522)
+    @invoice_4.update(coupon_id: 3)
+  end
 end

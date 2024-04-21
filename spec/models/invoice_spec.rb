@@ -4,13 +4,18 @@ RSpec.describe Invoice, type: :model do
   describe "validations" do
     it { should validate_presence_of :status }
     it { should validate_presence_of :customer_id }
+    it { should allow_value("", nil).for(:coupon_id) }
   end
+
   describe "relationships" do
     it { should belong_to :customer }
+    it { should belong_to(:coupon).optional }
+    it { should have_many :transactions}  
+    it { should have_many :invoice_items} 
     it { should have_many(:items).through(:invoice_items) }
     it { should have_many(:merchants).through(:items) }
-    it { should have_many :transactions}
   end
+
   describe "instance methods" do
     it "total_revenue" do
       @merchant1 = Merchant.create!(name: 'Hair Care')

@@ -5,6 +5,7 @@ class Merchant < ApplicationRecord
   has_many :invoices, through: :invoice_items
   has_many :customers, through: :invoices
   has_many :transactions, through: :invoices
+  has_many :coupons
 
   enum status: [:enabled, :disabled]
 
@@ -57,5 +58,21 @@ class Merchant < ApplicationRecord
 
   def disabled_items
     items.where(status: 0)
+  end
+
+  def enabled_coupons
+    coupons.where(status: 0)
+  end
+
+  def disabled_coupons
+    coupons.where(status: 1)
+  end
+
+  def enabled_coupons_count
+    enabled_coupons.count
+  end
+
+  def disabled_coupons_count
+    disabled_coupons.count
   end
 end

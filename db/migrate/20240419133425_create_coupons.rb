@@ -7,7 +7,6 @@ class CreateCoupons < ActiveRecord::Migration[7.1]
       t.integer :amount_type
       t.integer :status
       t.references :merchant, null: false, foreign_key: true
-      t.references :invoice, foreign_key: true # Deleted null: false
 
       t.timestamps
     end

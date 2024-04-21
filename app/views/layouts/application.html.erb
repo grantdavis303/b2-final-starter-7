@@ -14,14 +14,17 @@
   <body>
     <div class="top-container">
       <h1> Little Esty Shop </h1>
-      <div class="container">
+
+      <div class="error_box">
         <% flash.each do |type, notice| %>
-          <h5 class="text-info"><b><%= notice %></b></h5>
+          <p class="error_text"><b> <%= notice %> </b></h5>
         <% end %>
       </div>
+
       <div class="container">
         <%= yield %>
       </div>
+
     </div>
   </body>
 </html>

@@ -40,6 +40,22 @@ RSpec.describe "merchant dashboard" do
     @transaction6 = Transaction.create!(credit_card_number: 879799, result: 1, invoice_id: @invoice_7.id)
     @transaction7 = Transaction.create!(credit_card_number: 203942, result: 1, invoice_id: @invoice_2.id)
 
+    @coupon_1 = Coupon.create!(
+      name: "Coupon 1",
+      code: "$50_OFF_ALL",
+      amount: 50,
+      amount_type: 0,
+      status: 0,
+      merchant_id: @merchant1.id )
+    
+    @coupon_2 = Coupon.create!(
+      name: "Coupon 2",
+      code: "25%_OFF_SELECT",
+      amount: 25,
+      amount_type: 1,
+      status: 0,
+      merchant_id: @merchant1.id )
+
     visit merchant_dashboard_index_path(@merchant1)
   end
 
@@ -61,6 +77,14 @@ RSpec.describe "merchant dashboard" do
     click_link "Invoices"
 
     expect(current_path).to eq("/merchants/#{@merchant1.id}/invoices")
+  end
+
+  it "can see a link to my merchant coupons index" do
+    expect(page).to have_link("Coupons")
+
+    click_link "Coupons"
+
+    expect(current_path).to eq("/merchants/#{@merchant1.id}/coupons")
   end
 
   it "shows the names of the top 5 customers with successful transactions" do
@@ -93,6 +117,7 @@ RSpec.describe "merchant dashboard" do
     expect(page).to have_no_content(@customer_6.first_name)
     expect(page).to have_no_content(@customer_6.last_name)
   end
+  
   it "can see a section for Items Ready to Ship with list of names of items ordered and ids" do
     within("#items_ready_to_ship") do
 
@@ -118,5 +143,34 @@ RSpec.describe "merchant dashboard" do
 
   it "shows the date that the invoice was created in this format: Monday, July 18, 2019" do
     expect(page).to have_content(@invoice_1.created_at.strftime("%A, %B %-d, %Y"))
+  end
+
+  # User Story 1
+  it "has a link to coupon index, that shows all coupon names and amount off" do
+    # As a merchant, when I visit my merchant dashboard page
+    # I see a link to view all of my coupons
+    expect(page).to have_link("Coupons")
+
+    # When I click this link
+    click_link "Coupons"
+
+    # I'm taken to my coupons index page
+    expect(current_path).to eq("/merchants/#{@merchant1.id}/coupons")
+
+    # Where I see all of my coupon names including their amount off
+    within ".merchant_coupons" do
+      within "#merchant_coupon_#{@coupon_1.id}" do
+        # And each coupon's name is also a link to its show page.
+        expect(page).to have_link(@coupon_1.name)
+        expect(page).to have_content(@coupon_1.name)
+        expect(page).to have_content(@coupon_1.formatted_amount)
+      end
+
+      within "#merchant_coupon_#{@coupon_2.id}" do
+        expect(page).to have_link(@coupon_2.name)
+        expect(page).to have_content(@coupon_2.name)
+        expect(page).to have_content(@coupon_2.formatted_amount)
+      end
+    end
   end
 end

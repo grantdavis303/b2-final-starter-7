@@ -1,14 +1,13 @@
 # [Coupon Codes](https://young-badlands-19401-fff924f631aa.herokuapp.com/)
 ### Grant Davis
 
-Hi, my name is Grant and this is my Coupon Codes project.
+Hi, my name is Grant and this is my Coupon Codes project. This is my final project for Mod 2.
 
-To set up this code locally, run the following commands:
+To set up this code locally, run the following commands in your terminal:
 
 ```
 $ bundle install
 $ rails db:{drop,create,migrate,seed}
-# $ bundle exec rake csv_load:all
 ```
 
 ### Evaluation
@@ -26,16 +25,29 @@ $ rails db:{drop,create,migrate,seed}
 
 [Link to User Stories](https://backend.turing.edu/module2/projects/coupon_codes/#user-stories)
 
-
 - [x] User Story 0 - Deploy to Heroku
-- [ ] User Story 1 - Merchant Coupons Index
-- [ ] User Story 2 - Merchant Coupon Create
-- [ ] User Story 3 - Merchant Coupon Show Page
-- [ ] User Story 4 - Merchant Coupon Deactivate
-- [ ] User Story 5 - Merchant Coupon Activate
-- [ ] User Story 6 - Merchant Coupon Index Sorted
+
+- [x] User Story 1 - Merchant Coupons Index
+
+- [x] User Story 2 - Merchant Coupon Create
+
+- [x] User Story 3 - Merchant Coupon Show Page
+
+- [x] User Story 4 - Merchant Coupon Deactivate
+
+- [x] User Story 5 - Merchant Coupon Activate
+
+- [x] User Story 6 - Merchant Coupon Index Sorted
+
 - [ ] User Story 7 - Merchant Invoice Show Page: Subtotal and Grand Total Revenues 
+
 - [ ] User Story 8 - Admin Invoice Show Page: Subtotal and Grand Total Revenues
+
+### Goals
+
+- [ ] If a coupon’s dollar value (ex. “$10 off”) exceeds the total cost of that merchant’s items on the invoice, the grand total for that merchant’s items should then be $0. (In other words, the merchant will never owe money to a customer.)
+
+- [ ] A coupon code from a Merchant only applies to Items sold by that Merchant.
 
 ### Notes
 
@@ -48,4 +60,7 @@ Problem: Admin Invoices Index Page:53 will sometimes throw an error because the 
 ```
 ```
 Had to change the schema to allow nil values for invoice_id, and thus had to change some of the validation testing to "allow blank and nil"
+```
+```
+Went back and added a migration for coupon_id to appear in invoices
 ```
