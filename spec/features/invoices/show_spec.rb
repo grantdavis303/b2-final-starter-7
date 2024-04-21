@@ -105,7 +105,7 @@ RSpec.describe "invoices show" do
   end
 
   # User Story 7
-  it "shows the subtotal and grand total before a discount is applied" do
+  it "shows the subtotal and grand total after a coupon is applied" do
     # As a merchant, when I visit one of my merchant invoice show pages
     visit merchant_invoice_path(@merchant1, @invoice_1)
 
