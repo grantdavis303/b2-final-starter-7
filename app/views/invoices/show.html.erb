@@ -48,4 +48,23 @@
     </tbody>
   </table>
 
+<section class="apply_a_coupon">
+  <h4> Apply a Coupon to this Invoice </h4>
+
+<!--  -->
+
+
+</section>
+
+
+<!-- If no coupon is already applied -->
+
+<!-- Else --- say a coupon has already been applied to this invoice-->
+
+  <%= form_with url: "/", method: :patch, data: {turbo: false}, local: true do |form| %>
+    <%= form.select :coupon, @merchant.enabled_coupons_codes %>
+    <%= form.button "Apply Coupon"%>
+  <% end %>
+
+
 </body>
