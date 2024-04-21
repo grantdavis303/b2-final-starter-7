@@ -23,6 +23,11 @@ class Coupon < ApplicationRecord
   end
 
   def usage_count
-    merchant.invoices.count
+    merchant.invoices
+      .select("invoices.*")
+      .joins(:transactions)
+      .where("transactions.result = '1' AND invoices.coupon_id = #{self.id}")
+      .group("invoices.id")
+      .length
   end
 end
