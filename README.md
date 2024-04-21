@@ -39,15 +39,9 @@ $ rails db:{drop,create,migrate,seed}
 
 - [x] User Story 6 - Merchant Coupon Index Sorted
 
-- [ ] User Story 7 - Merchant Invoice Show Page: Subtotal and Grand Total Revenues 
+- [x] User Story 7 - Merchant Invoice Show Page: Subtotal and Grand Total Revenues 
 
-- [ ] User Story 8 - Admin Invoice Show Page: Subtotal and Grand Total Revenues
-
-### Goals
-
-- [ ] If a coupon’s dollar value (ex. “$10 off”) exceeds the total cost of that merchant’s items on the invoice, the grand total for that merchant’s items should then be $0. (In other words, the merchant will never owe money to a customer.)
-
-- [ ] A coupon code from a Merchant only applies to Items sold by that Merchant.
+- [x] User Story 8 - Admin Invoice Show Page: Subtotal and Grand Total Revenues
 
 ### Notes
 
