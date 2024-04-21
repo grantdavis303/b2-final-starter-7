@@ -42,10 +42,9 @@ Coupon.create!(
   merchant_id: 2 )
 
 puts " "
-puts "Coupons Created Successfully"
+puts "Coupons created."
 
 # Link Invoices to Coupons
 Rake::Task["link:invoices_and_coupons"].invoke
 
-puts " "
-puts "Coupons Added to Invoices"
+puts "Coupons and invoices linked."
