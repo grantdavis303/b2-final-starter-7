@@ -1,5 +1,6 @@
 class Merchant < ApplicationRecord
   validates_presence_of :name
+  
   has_many :items
   has_many :invoice_items, through: :items
   has_many :invoices, through: :invoice_items
@@ -32,7 +33,7 @@ class Merchant < ApplicationRecord
     .group(:id)
     .order('total_revenue desc')
     .limit(5)
-   end
+  end
 
   def self.top_merchants
     joins(invoices: [:invoice_items, :transactions])
@@ -74,9 +75,5 @@ class Merchant < ApplicationRecord
 
   def disabled_coupons_count
     disabled_coupons.count
-  end
-
-  def enabled_coupons_codes
-    enabled_coupons.pluck("code")
   end
 end

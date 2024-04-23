@@ -1,7 +1,6 @@
 class Invoice < ApplicationRecord
   validates_presence_of :status,
                         :customer_id
-
   validates :coupon_id, presence: true, allow_blank: true
 
   belongs_to :customer
