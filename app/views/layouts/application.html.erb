@@ -4,27 +4,27 @@
     <title>Little Esty Shop - Final</title>
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
-
     <meta name="viewport" content="width=device-width,initial-scale=1">
-
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
   </head>
 
   <body>
     <div class="top-container">
-      <h1> Little Esty Shop </h1>
 
-      <div class="error_box">
-        <% flash.each do |type, notice| %>
-          <p class="error_text"><b> <%= notice %> </b></h5>
-        <% end %>
-      </div>
+      <h1> Little Esty Shop </h1>
 
       <div class="container">
         <%= yield %>
       </div>
 
+      <% flash.each do |type, notice| %>
+        <div class="error_box">
+          <p class="error_text"><b> <%= notice %> </b></h5>
+        </div>
+      <% end %>      
+
     </div>
   </body>
+
 </html>
