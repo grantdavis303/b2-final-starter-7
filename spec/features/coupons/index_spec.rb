@@ -83,12 +83,15 @@ RSpec.describe "coupon index page" do
         expect(page).to have_link(@coupon_1.name)
         expect(page).to have_content(@coupon_1.name)
         expect(page).to have_content(@coupon_1.formatted_amount)
+        expect(page).to have_content(@coupon_1.code) # Extra
+
       end
       
       within "#merchant_coupon_#{@coupon_2.id}" do
         expect(page).to have_link(@coupon_2.name)
         expect(page).to have_content(@coupon_2.name)
         expect(page).to have_content(@coupon_2.formatted_amount)
+        expect(page).to have_content(@coupon_2.code) # Extra
       end
     end
   end
