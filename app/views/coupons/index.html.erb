@@ -16,7 +16,9 @@
       <section id="merchant_coupon_<%= coupon.id %>">
         <%= link_to coupon.name, merchant_coupon_path(@merchant, coupon) %>
         <p><b> <%= coupon.formatted_amount %> </b></p>
+        <code class="coupon_code"> <%= coupon.code %> </code>
       </section>
+      <br>
     <% end %>
   </section>
 
@@ -26,7 +28,9 @@
       <section id="merchant_coupon_<%= coupon.id %>">
         <%= link_to coupon.name, merchant_coupon_path(@merchant, coupon) %>
         <p><b> <%= coupon.formatted_amount %> </b></p>
+        <code class="coupon_code"> <%= coupon.code %> </code>
       </section>
+      <br>
     <% end %>
   </section>
 
