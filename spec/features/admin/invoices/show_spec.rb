@@ -74,33 +74,30 @@ describe "Admin Invoices Show Page" do
     end
   end
 
-  # User Story 8
+  # User Story 8 P1 - Coupon applied
   it "shows subtotal and grand total for all invoices" do
-  # As an admin, when I visit one of my admin invoice show pages
-  visit admin_invoice_path(@i1)
+    # As an admin, when I visit one of my admin invoice show pages with a coupon applied
+    visit admin_invoice_path(@i1)
 
-  # I see the name and code of the coupon that was used (if there was a coupon applied)
-  within ".applied_coupon_info" do
-    expect(page).to have_content(@coupon.name)
-    expect(page).to have_content(@coupon.code)
+    # I see the name and code of the coupon that was used (if there was a coupon applied)
+    within ".applied_coupon_info" do
+      expect(page).to have_content(@coupon.name)
+      expect(page).to have_content(@coupon.code)
+    end
+
+    # And I see both the subtotal revenue from that invoice (before coupon) and the grand total revenue (after coupon) for this invoice.
+    within ".invoice_totals" do
+      expect(page).to have_content("Subtotal: $28.60")
+      expect(page).to have_content("Grand Total: $27.60")
+    end
   end
 
-  # And I see both the subtotal revenue from that invoice (before coupon) and the grand total revenue (after coupon) for this invoice.
-  within ".invoice_totals" do
-    expect(page).to have_content("Subtotal: $28.60")
-    expect(page).to have_content("Grand Total: $27.60")
-  end
-
-  # * Alternate Paths to consider: 
-  # 1. There may be invoices with items from more than 1 merchant. Coupons for a merchant only apply to items from that merchant.
-  # 2. When a coupon with a dollar-off value is used with an invoice with multiple merchants' items, the dollar-off amount applies to the total amount even though there may be items present from another merchant.
-  end
-
-  # No coupon applied
+  # User Story 8 P1 - No coupon applied
   it "shows subtotal and grand total for all invoices" do
+    # As an admin, when I visit one of my admin invoice show pages with no coupon applied
     visit admin_invoice_path(@i2)
-  
+
+    # I see a message saying that no coupon was used on this invoice
     expect(page).to have_content("No coupon was used on this invoice.")
   end
-
 end

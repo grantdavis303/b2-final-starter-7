@@ -161,13 +161,13 @@ RSpec.describe "merchant dashboard" do
     within ".merchant_coupons" do
       within "#merchant_coupon_#{@coupon_1.id}" do
         # And each coupon's name is also a link to its show page.
-        expect(page).to have_link(@coupon_1.name)
+        expect(page).to have_link(@coupon_1.name, href: merchant_coupon_path(@merchant1, @coupon_1))
         expect(page).to have_content(@coupon_1.name)
         expect(page).to have_content(@coupon_1.formatted_amount)
       end
 
       within "#merchant_coupon_#{@coupon_2.id}" do
-        expect(page).to have_link(@coupon_2.name)
+        expect(page).to have_link(@coupon_2.name, href: merchant_coupon_path(@merchant1, @coupon_2))
         expect(page).to have_content(@coupon_2.name)
         expect(page).to have_content(@coupon_2.formatted_amount)
       end
