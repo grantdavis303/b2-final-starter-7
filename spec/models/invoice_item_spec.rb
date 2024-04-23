@@ -14,6 +14,10 @@ RSpec.describe InvoiceItem, type: :model do
     it { should belong_to(:item) }
   end
 
+  describe "enums" do
+    it { should define_enum_for(:status).with_values([:pending, :packaged, :shipped]) }
+  end
+
   describe "class methods" do
     before(:each) do
       @m1 = Merchant.create!(name: 'Merchant 1')

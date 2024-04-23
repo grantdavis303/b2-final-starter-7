@@ -8,12 +8,16 @@ RSpec.describe Invoice, type: :model do
   end
 
   describe "relationships" do
-    it { should belong_to :customer }
+    it { should belong_to(:customer) }
     it { should belong_to(:coupon).optional }
-    it { should have_many :transactions}  
-    it { should have_many :invoice_items} 
+    it { should have_many(:transactions)}  
+    it { should have_many(:invoice_items)} 
     it { should have_many(:items).through(:invoice_items) }
     it { should have_many(:merchants).through(:items) }
+  end
+
+  describe "enums" do
+    it { should define_enum_for(:status).with_values([:cancelled, :in_progress, :completed]) }
   end
 
   describe "instance methods" do

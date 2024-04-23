@@ -20,6 +20,11 @@ RSpec.describe Coupon, type: :model do
     it { should belong_to(:merchant) }
   end
 
+  describe "enums" do
+    it { should define_enum_for(:amount_type).with_values([:dollar, :percent]) }
+    it { should define_enum_for(:status).with_values([:enabled, :disabled]) }
+  end
+
   describe "instance methods" do
     it "#formatted_amount" do
       @merchant1 = Merchant.create!(name: "Hair Care")
