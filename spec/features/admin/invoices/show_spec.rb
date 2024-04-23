@@ -99,7 +99,6 @@ describe "Admin Invoices Show Page" do
   # No coupon applied
   it "shows subtotal and grand total for all invoices" do
     visit admin_invoice_path(@i2)
-    save_and_open_page
   
     expect(page).to have_content("No coupon was used on this invoice.")
   end
