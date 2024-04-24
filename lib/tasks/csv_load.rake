@@ -94,33 +94,20 @@ end
 
 namespace :link do
   task :invoices_and_coupons => :environment do
-
     # Merchant 1
-
     @invoice_1 = Invoice.find(29)
     @invoice_1.update(coupon_id: 1)
 
     @invoice_2 = Invoice.find(137)
     @invoice_2.update(coupon_id: 1)
 
-    @invoice_3 = Invoice.find(593)
-    @invoice_3.update(coupon_id: 1)
+    @invoice_3 = Invoice.find(346)
+    @invoice_3.update(coupon_id: 2)
 
-    # Merchant 2
+    @invoice_4 = Invoice.find(593)
+    @invoice_4.update(coupon_id: 4)
 
-    @invoice_4 = Invoice.find(45)
-    @invoice_4.update(coupon_id: 3)
-
-    @invoice_4 = Invoice.find(77)
-    @invoice_4.update(coupon_id: 3)
-
-    @invoice_4 = Invoice.find(121)
-    @invoice_4.update(coupon_id: 3)
-
-    @invoice_4 = Invoice.find(277)
-    @invoice_4.update(coupon_id: 3)
-
-    @invoice_4 = Invoice.find(522)
-    @invoice_4.update(coupon_id: 3)
+    @invoice_5 = Invoice.find(882)
+    @invoice_5.update(coupon_id: 4)
   end
 end

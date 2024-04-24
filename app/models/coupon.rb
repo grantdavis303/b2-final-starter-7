@@ -5,7 +5,6 @@ class Coupon < ApplicationRecord
                         :amount_type,
                         :status,
                         :merchant_id
-
   validates_uniqueness_of :code
   validates_numericality_of :amount                        
 

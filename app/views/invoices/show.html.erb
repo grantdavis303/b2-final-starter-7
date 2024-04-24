@@ -11,8 +11,7 @@
   <br>
 
   <p> Created on: <%= @invoice.created_at.strftime("%A, %B %-d, %Y") %></p>
-  <p>Total Revenue: <%= @invoice.total_revenue %></p>
-
+  <p> Total Revenue: $<%= number_with_precision(@invoice.total_revenue / 100, :precision => 2, :delimiter => ",") %> </p>
 
   <h4>Customer:</h4>
     <%= @customer.first_name %> <%= @customer.last_name %><br>
@@ -35,7 +34,7 @@
           <tr class="tr">
             <td style="text-align:center"><%= i.item.name %></td>
             <td style="text-align:center"><%= i.quantity %></td>
-            <td style="text-align:center">$<%= i.unit_price %></td>
+            <td style="text-align:center">$<%= number_with_precision(i.unit_price / 100, :precision => 2, :delimiter => ",") %></td>
             <td style="text-align:center">
               <%= form_with model: @invoice, url: merchant_invoice_path(@merchant, @invoice), method: :patch, local: true do |f| %>
                 <%= f.select :status, Invoice.statuses.keys, selected: "#{@invoice.status}" %>
@@ -47,5 +46,41 @@
       <% end %>
     </tbody>
   </table>
+
+<br>
+
+<h4> Coupons </h4>
+
+  <!-- If there is not already a coupon applied to the invoice, show the option to add one -->
+  <% if @invoice.coupon_id == nil %>
+    <section class="apply_a_coupon">
+      <h4> Apply a Coupon to this Invoice </h4>
+        <%= form_with url: merchant_invoice_path(@merchant, @invoice), method: :patch, data: {turbo: false}, local: true do |form| %>
+          <%= form.select :add_coupon, options_from_collection_for_select(@merchant.enabled_coupons, 'id', 'name', 'code') %>
+          <%= form.button "Apply Coupon"%>
+        <% end %>
+    </section>
+  <!-- If there is already a coupon applied to the invoice, list out the details of the coupon applied -->
+  <% else %>
+    <section class="applied_coupon_info">
+      <p> This coupon has been applied to this invoice: <%= link_to @invoice.coupon.name, merchant_coupon_path(@merchant, @invoice.coupon.id) %> </p>
+      <code class="coupon_code"> <%= @invoice.coupon.code %> </code>
+    </section>
+  <% end %> 
+
+<br><br>
+
+<section class="invoice_totals">
+  <h3> Subtotal: $<%= number_with_precision(@invoice.total_revenue / 100, :precision => 2, :delimiter => ",") %> </h3>
+    <% if @invoice.coupon_id != nil %>
+      <% if @invoice.coupon.amount_type == "dollar" %>
+        <h3> Grand Total: <span class="final_revenue">$<%= number_with_precision(@invoice.calculate_dollar_grand_total / 100, :precision => 2, :delimiter => ",") %> </span></h3>
+      <% else @invoice.coupon.amount_type == "percent" %>
+        <h3> Grand Total: <span class="final_revenue">$<%= number_with_precision(@invoice.calculate_percent_grand_total / 100, :precision => 2, :delimiter => ",") %> </span>
+      <% end %>
+    <% else %>
+      <h3> Grand Total: <span class="final_revenue">$<%= number_with_precision(@invoice.total_revenue / 100, :precision => 2, :delimiter => ",") %> </span>
+    <% end %>
+</section>
 
 </body>

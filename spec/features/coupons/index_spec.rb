@@ -83,12 +83,15 @@ RSpec.describe "coupon index page" do
         expect(page).to have_link(@coupon_1.name)
         expect(page).to have_content(@coupon_1.name)
         expect(page).to have_content(@coupon_1.formatted_amount)
+        expect(page).to have_content(@coupon_1.code) # Extra
+
       end
       
       within "#merchant_coupon_#{@coupon_2.id}" do
         expect(page).to have_link(@coupon_2.name)
         expect(page).to have_content(@coupon_2.name)
         expect(page).to have_content(@coupon_2.formatted_amount)
+        expect(page).to have_content(@coupon_2.code) # Extra
       end
     end
   end
@@ -145,25 +148,30 @@ RSpec.describe "coupon index page" do
       end
     end
 
-    # Sad Path 1 
+    # Sad Path 1 - Error when no field is filled in
     it "error when no field is filled in" do 
+      # From the Coupon Index page, click link to Create Coupon
       within ".new_merchant_coupon" do
         click_link "Create Coupon"
       end
-      
+
+      # Click the Create Coupon button
       within ".new_coupon_form" do
         click_button "Create Coupon"
       end
 
+      # Error
       expect(page).to have_content("Name can't be blank, Code can't be blank, Amount can't be blank, Amount type can't be blank, and Amount is not a number")
     end
 
-    # Sad Path 2 
+    # Sad Path 2 - Error when all but one field is filled in
     it "error when all but one field is filled in" do 
+      # From the Coupon Index page, click link to Create Coupon
       within ".new_merchant_coupon" do
         click_link "Create Coupon"
       end
       
+      # Click the Create Coupon button
       within ".new_coupon_form" do
         fill_in :code, with: "75OFFALL2024"
         fill_in :amount, with: 75
@@ -171,15 +179,18 @@ RSpec.describe "coupon index page" do
         click_button "Create Coupon"
       end
 
+      # Error
       expect(page).to have_content("Name can't be blank")
     end
 
-    # Sad Path 3
-    it "error when amount is not a number" do 
+    # Sad Path 3 - Error when amount is not a number
+    it "error when amount is not a number" do
+      # From the Coupon Index page, click link to Create Coupon
       within ".new_merchant_coupon" do
         click_link "Create Coupon"
       end
-      
+
+      # Click the Create Coupon button
       within ".new_coupon_form" do
         fill_in :name, with: "Dope Fall Coupon 1"
         fill_in :code, with: "75OFFALL2024"
@@ -188,15 +199,18 @@ RSpec.describe "coupon index page" do
         click_button "Create Coupon"
       end
 
+      # Error
       expect(page).to have_content("Amount is not a number")
     end
 
-    # Sad Path 4
+    # Sad Path 4 - Error when amount is not unique
     it "error when code is not unique" do 
+      # From the Coupon Index page, click link to Create Coupon
       within ".new_merchant_coupon" do
         click_link "Create Coupon"
       end
-      
+
+      # Click the Create Coupon button
       within ".new_coupon_form" do
         fill_in :name, with: "Dope Fall Coupon 1"
         fill_in :code, with: "$50_OFF_ALL"
@@ -205,24 +219,108 @@ RSpec.describe "coupon index page" do
         click_button "Create Coupon"
       end
 
+      # Error
       expect(page).to have_content("Code has already been taken")
     end
+  end
 
+  # Sad Path 5 P1 - Error when merchant has 5 active coupons
+  it "cannot activate a coupon when there are five active ones" do
+    @coupon_5 = Coupon.create!( name: "Coupon 5", code: "$45_OFF_ALL", amount: 45, amount_type: 0, status: 0, merchant_id: @merchant1.id )
+    @coupon_6 = Coupon.create!( name: "Coupon 6", code: "$25_OFF_ALL", amount: 25, amount_type: 0, status: 0, merchant_id: @merchant1.id )
+    @coupon_7 = Coupon.create!( name: "Coupon 7", code: "$20_OFF_ALL", amount: 20, amount_type: 0, status: 0, merchant_id: @merchant1.id )
+    
+    # Revisit the Coupon Index page after loading in new data
+    visit merchant_coupons_path(@merchant1)
+
+    # From the Coupon Index page, click on a Coupon
+    within ".merchant_coupons_disabled" do
+      click_link(@coupon_2.name)
+    end
+
+    # Error
+    within ".coupon_buttons" do
+      expect(page).not_to have_button("Activate Coupon")
+      expect(page).to have_content("Unable to activate coupon. Please deactivate a coupon and try again.")
+    end
+  end
+
+  # Sad Path 5 P2 - No error when merchant has 5 active coupons, deactivates one, and activates another
+  it "cannot activate a coupon when there are five active ones" do
+    @coupon_5 = Coupon.create!( name: "Coupon 5", code: "$45_OFF_ALL", amount: 45, amount_type: 0, status: 1, merchant_id: @merchant1.id )
+    @coupon_6 = Coupon.create!( name: "Coupon 6", code: "$25_OFF_ALL", amount: 25, amount_type: 0, status: 0, merchant_id: @merchant1.id )
+    @coupon_7 = Coupon.create!( name: "Coupon 7", code: "$20_OFF_ALL", amount: 20, amount_type: 0, status: 0, merchant_id: @merchant1.id )
+    @coupon_8 = Coupon.create!( name: "Coupon 8", code: "$10_OFF_ALL", amount: 10, amount_type: 0, status: 0, merchant_id: @merchant1.id )
+    
+    # Revisit the Coupon Index page after loading in new data
+    visit merchant_coupons_path(@merchant1)
+
+    # From the Coupon Index page, click on a Coupon
+    within ".merchant_coupons_disabled" do
+      click_link(@coupon_2.name)
+    end
+
+    # Error
+    within ".coupon_buttons" do
+      expect(page).not_to have_button("Activate Coupon")
+      expect(page).to have_content("Unable to activate coupon. Please deactivate a coupon and try again.")
+    end
+
+    # Click on Coupons link to go to back to the index and then
+    # click on a coupon in the "Enabled Coupons" section, and deactivate it
+    click_link("Coupons")
+
+    within ".merchant_coupons_enabled" do
+      click_link(@coupon_1.name)
+    end
+
+    within ".coupon_buttons" do
+      click_button("Deactivate Coupon")
+    end
+
+    # Click on Coupons link to go to back to the index and then
+    # click on the original coupon in the "Disabled Coupons" section, and activate it
+    click_link("Coupons")
+
+    within ".merchant_coupons_disabled" do
+      click_link(@coupon_2.name)
+    end
+
+    within ".coupon_buttons" do
+      click_button("Activate Coupon")
+    end
+
+    # No Error - New coupon will be in the "Enabled Coupons" section
+    click_link("Coupons")
+
+    within ".merchant_coupons_enabled" do
+      expect(page).to have_content(@coupon_2.name)
+    end
   end
 
   # User Story 6
   it "sorted items based on if they're enable or disabled" do
-    # As a merchant, when I visit my coupon index page
+    @coupon_5 = Coupon.create!( name: "Coupon 5", code: "$45_OFF_ALL", amount: 45, amount_type: 0, status: 1, merchant_id: @merchant1.id )
+    @coupon_6 = Coupon.create!( name: "Coupon 6", code: "$25_OFF_ALL", amount: 25, amount_type: 0, status: 0, merchant_id: @merchant1.id )
+    @coupon_7 = Coupon.create!( name: "Coupon 7", code: "$20_OFF_ALL", amount: 20, amount_type: 0, status: 0, merchant_id: @merchant1.id )
+    @coupon_8 = Coupon.create!( name: "Coupon 8", code: "$10_OFF_ALL", amount: 10, amount_type: 0, status: 0, merchant_id: @merchant1.id )
+
+    # As a merchant, when I visit my coupon index page (after loading in new data)
+    visit merchant_coupons_path(@merchant1)
+
     # I can see that my coupons are separated between active and inactive coupons. 
     within ".merchant_coupons_enabled" do
       expect(page).to have_content(@coupon_1.name)
       expect(page).to have_content(@coupon_3.name)
+      expect(page).to have_content(@coupon_6.name)
+      expect(page).to have_content(@coupon_7.name)
+      expect(page).to have_content(@coupon_8.name)
     end
 
     within ".merchant_coupons_disabled" do
       expect(page).to have_content(@coupon_2.name)
       expect(page).to have_content(@coupon_4.name)
+      expect(page).to have_content(@coupon_5.name)
     end
   end
-
 end

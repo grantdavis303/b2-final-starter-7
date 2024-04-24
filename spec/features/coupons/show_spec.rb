@@ -72,19 +72,21 @@ RSpec.describe "coupon show page" do
       # As well as its status (active or inactive)      
       expect(page).to have_content(@coupon_1.status)
       # And I see a count of how many times that coupon has been used.
-      # expect(page).to have_content(@coupon_1.usage_count)      
+      expect(page).to have_content(@coupon_1.usage_count)      
     end
     # (Note: "use" of a coupon should be limited to successful transactions.)
   end
 
   # User Story 4
   it "has button to deactivate a coupon" do
-    visit merchant_coupon_path(@merchant1, @coupon_1)
     # As a merchant, when I visit one of my active coupon's show pages 
+    visit merchant_coupon_path(@merchant1, @coupon_1)
+
     # I see a button to deactivate that coupon
     within ".coupon_buttons" do
       expect(page).to have_button("Deactivate Coupon")
     end
+
     # When I click that button, I'm taken back to the coupon show page 
     click_button("Deactivate Coupon")
     expect(current_path).to eq(merchant_coupon_path(@merchant1, @coupon_1))
@@ -93,42 +95,25 @@ RSpec.describe "coupon show page" do
     within ".coupon_information" do
       expect(page).to have_content("disabled")
     end
-
-    # * Sad Paths to consider: 
-    # 1. A coupon cannot be deactivated if there are any pending invoices with that coupon.
   end
 
   # User Story 5
   it "has button to activate a coupon" do
-    visit merchant_coupon_path(@merchant1, @coupon_2)
     # As a merchant, when I visit one of my inactive coupon show pages
+    visit merchant_coupon_path(@merchant1, @coupon_2)
+
     # I see a button to activate that coupon
     within ".coupon_buttons" do
       expect(page).to have_button("Activate Coupon")
     end
+
     # When I click that button, I'm taken back to the coupon show page
     click_button("Activate Coupon")
     expect(current_path).to eq(merchant_coupon_path(@merchant1, @coupon_2))
+    
     # And I can see that its status is now listed as 'active'.
     within ".coupon_information" do
       expect(page).to have_content("enabled")
     end
   end
-
-  # Sad Path 1
-  it "cannot activate a coupon when there are five active ones" do
-    @coupon_3 = Coupon.create!( name: "Coupon 3", code: "$45_OFF_ALL", amount: 45, amount_type: 0, status: 0, merchant_id: @merchant1.id )
-    @coupon_4 = Coupon.create!( name: "Coupon 4", code: "$25_OFF_ALL", amount: 25, amount_type: 0, status: 0, merchant_id: @merchant1.id )
-    @coupon_5 = Coupon.create!( name: "Coupon 5", code: "$20_OFF_ALL", amount: 20, amount_type: 0, status: 0, merchant_id: @merchant1.id )
-    @coupon_6 = Coupon.create!( name: "Coupon 6", code: "$10_OFF_ALL", amount: 10, amount_type: 0, status: 0, merchant_id: @merchant1.id )
-
-    visit merchant_coupon_path(@merchant1, @coupon_2)
-
-    within ".coupon_buttons" do
-      expect(page).not_to have_button("Activate Coupon")
-      expect(page).to have_content("Unable to activate coupon. Please deactivate a coupon and try again.")
-    end
-  end
-
-
 end

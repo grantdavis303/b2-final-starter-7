@@ -2,15 +2,20 @@ require 'rails_helper'
 
 describe Merchant do
   describe "validations" do
-    it { should validate_presence_of :name }
+    it { should validate_presence_of(:name) }
   end
+  
   describe "relationships" do
-    it { should have_many :items }
+    it { should have_many(:items) }
     it { should have_many(:invoice_items).through(:items) }
     it { should have_many(:invoices).through(:invoice_items)}
     it { should have_many(:customers).through(:invoices) }
     it { should have_many(:transactions).through(:invoices) }
     it { should have_many(:coupons) }
+  end
+
+  describe "enums" do
+    it { should define_enum_for(:status).with_values([:enabled, :disabled]) }
   end
 
   describe "class methods" do
@@ -59,7 +64,6 @@ describe Merchant do
       create(:transaction, invoice: @invoice6, result: 1) 
       create(:transaction, invoice: @invoice7, result: 1) 
       create(:transaction, invoice: @invoice8, result: 1) 
-
     end
 
     it 'top_merchants' do
@@ -117,7 +121,16 @@ describe Merchant do
       @transaction7 = Transaction.create!(credit_card_number: 203942, result: 1, invoice_id: @invoice_7.id)
       @transaction7 = Transaction.create!(credit_card_number: 203942, result: 1, invoice_id: @invoice_8.id)
 
+      @coupon_1 = Coupon.create!(name: "Coupon 1", code: "$50_OFF_ALL", amount: 50, amount_type: 0, status: 0, merchant_id: @merchant1.id )
+      @coupon_2 = Coupon.create!(name: "Coupon 2", code: "25%_OFF_SELECT", amount: 25, amount_type: 1, status: 1, merchant_id: @merchant1.id )
+      @coupon_3 = Coupon.create!(name: "Coupon 3", code: "65%_OFF", amount: 65, amount_type: 0, status: 0, merchant_id: @merchant1.id )
+      @coupon_4 = Coupon.create!(name: "Coupon 4", code: "$12_OFF_SELECT", amount: 12, amount_type: 0, status: 1, merchant_id: @merchant1.id )
+      @coupon_5 = Coupon.create!( name: "Coupon 5", code: "$45_OFF_ALL", amount: 45, amount_type: 0, status: 1, merchant_id: @merchant1.id )
+      @coupon_6 = Coupon.create!( name: "Coupon 6", code: "$25_OFF_ALL", amount: 25, amount_type: 0, status: 0, merchant_id: @merchant1.id )
+      @coupon_7 = Coupon.create!( name: "Coupon 7", code: "$20_OFF_ALL", amount: 20, amount_type: 0, status: 0, merchant_id: @merchant1.id )
+      @coupon_8 = Coupon.create!( name: "Coupon 8", code: "$10_OFF_ALL", amount: 10, amount_type: 0, status: 0, merchant_id: @merchant1.id )
     end
+
     it "can list items ready to ship" do
       expect(@merchant1.ordered_items_to_ship).to eq([@ii_1, @ii_2, @ii_4, @ii_6, @ii_7, @ii_8, @ii_9, @ii_10])
     end
@@ -148,37 +161,19 @@ describe Merchant do
     end
 
     it "#enabled_coupons" do
-      @merchant1 = Merchant.create!(name: "Hair Care")
-      @coupon_1 = Coupon.create!(name: "Coupon 1", code: "$50_OFF_ALL", amount: 50, amount_type: 0, status: 0, merchant_id: @merchant1.id )
-      @coupon_2 = Coupon.create!(name: "Coupon 2", code: "25%_OFF_SELECT", amount: 25, amount_type: 1, status: 1, merchant_id: @merchant1.id )
-      @coupon_3 = Coupon.create!(name: "Coupon 3", code: "65%_OFF", amount: 65, amount_type: 0, status: 0, merchant_id: @merchant1.id )
-      expect(@merchant1.enabled_coupons).to eq([@coupon_1, @coupon_3])
+      expect(@merchant1.enabled_coupons).to eq([@coupon_1, @coupon_3, @coupon_6, @coupon_7, @coupon_8])
     end
 
     it "#disabled_coupons" do
-      @merchant1 = Merchant.create!(name: "Hair Care")
-      @coupon_1 = Coupon.create!(name: "Coupon 1", code: "$50_OFF_ALL", amount: 50, amount_type: 0, status: 1, merchant_id: @merchant1.id )
-      @coupon_2 = Coupon.create!(name: "Coupon 2", code: "25%_OFF_SELECT", amount: 25, amount_type: 1, status: 1, merchant_id: @merchant1.id )
-      @coupon_3 = Coupon.create!(name: "Coupon 3", code: "65%_OFF", amount: 65, amount_type: 0, status: 0, merchant_id: @merchant1.id )
-      expect(@merchant1.disabled_coupons).to eq([@coupon_1, @coupon_2])
+      expect(@merchant1.disabled_coupons).to eq([@coupon_2, @coupon_4, @coupon_5])
     end
 
     it "#enabled_coupons_count" do
-      @merchant1 = Merchant.create!(name: "Hair Care")
-      @coupon_1 = Coupon.create!(name: "Coupon 1", code: "$50_OFF_ALL", amount: 50, amount_type: 0, status: 0, merchant_id: @merchant1.id )
-      @coupon_2 = Coupon.create!(name: "Coupon 2", code: "25%_OFF_SELECT", amount: 25, amount_type: 1, status: 1, merchant_id: @merchant1.id )
-      @coupon_3 = Coupon.create!(name: "Coupon 3", code: "65%_OFF", amount: 65, amount_type: 0, status: 0, merchant_id: @merchant1.id )
-      @coupon_4 = Coupon.create!(name: "Coupon 4", code: "99%_OFF", amount: 99, amount_type: 1, status: 0, merchant_id: @merchant1.id )
-      expect(@merchant1.enabled_coupons_count).to eq(3)
+      expect(@merchant1.enabled_coupons_count).to eq(5)
     end
 
     it "#disabled_coupons_count" do
-      @merchant1 = Merchant.create!(name: "Hair Care")
-      @coupon_1 = Coupon.create!(name: "Coupon 1", code: "$50_OFF_ALL", amount: 50, amount_type: 0, status: 1, merchant_id: @merchant1.id )
-      @coupon_2 = Coupon.create!(name: "Coupon 2", code: "25%_OFF_SELECT", amount: 25, amount_type: 1, status: 1, merchant_id: @merchant1.id )
-      @coupon_3 = Coupon.create!(name: "Coupon 3", code: "65%_OFF", amount: 65, amount_type: 0, status: 0, merchant_id: @merchant1.id )
-      @coupon_4 = Coupon.create!(name: "Coupon 4", code: "99%_OFF", amount: 99, amount_type: 0, status: 0, merchant_id: @merchant1.id )
-      expect(@merchant1.disabled_coupons_count).to eq(2)
+      expect(@merchant1.disabled_coupons_count).to eq(3)
     end
   end
 end

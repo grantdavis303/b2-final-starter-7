@@ -12,13 +12,19 @@ class InvoicesController < ApplicationController
   end
 
   def update
-    @invoice.update(invoice_params)
+    if params.include? (:add_coupon)
+      @invoice.update(
+        coupon_id: params[:add_coupon],
+      )
+    else
+      @invoice.update(invoice_params)
+    end
     redirect_to merchant_invoice_path(@merchant, @invoice)
   end
 
   private
   def invoice_params
-    params.require(:invoice).permit(:status)
+    params.permit(:status, :coupon)
   end
 
   def find_invoice_and_merchant
