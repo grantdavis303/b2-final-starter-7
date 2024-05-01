@@ -53,6 +53,7 @@
 
   <!-- If there is not already a coupon applied to the invoice, show the option to add one -->
   <% if @invoice.coupon_id == nil %>
+
     <section class="apply_a_coupon">
       <h4> Apply a Coupon to this Invoice </h4>
         <%= form_with url: merchant_invoice_path(@merchant, @invoice), method: :patch, data: {turbo: false}, local: true do |form| %>
@@ -60,12 +61,15 @@
           <%= form.button "Apply Coupon"%>
         <% end %>
     </section>
+
   <!-- If there is already a coupon applied to the invoice, list out the details of the coupon applied -->
   <% else %>
+
     <section class="applied_coupon_info">
       <p> This coupon has been applied to this invoice: <%= link_to @invoice.coupon.name, merchant_coupon_path(@merchant, @invoice.coupon.id) %> </p>
       <code class="coupon_code"> <%= @invoice.coupon.code %> </code>
     </section>
+
   <% end %> 
 
 <br><br>
